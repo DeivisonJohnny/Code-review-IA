@@ -14,19 +14,16 @@ jobs:
       contents: read
       
     steps:
-      # 1. Baixa o código do repositório cliente (onde o PR foi aberto)
       - name: Checkout do código do PR
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # 2. Baixa o script TypeScript do repositório central
-      # O parâmetro 'path' salva o script em uma pasta separada para não misturar com o projeto
       - name: Checkout do script de IA
         uses: actions/checkout@v4
         with:
-          repository: 'SEU_USUARIO_OU_ORGANIZACAO/revisor-ia-central' # Mude para o seu nome real
-          path: 'pasta-da-ia'
+          repository: 'DeivisonJohnny/Code-review-IA' 
+          path: 'ia-review' # A pasta temporária agora se chama ia-review
 
       - name: Configurar o Node.js
         uses: actions/setup-node@v4
@@ -48,5 +45,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           REPO_NAME: ${{ github.repository }}
-        # Aponta para o script dentro da pasta que criamos no passo 2
-        run: npx tsx pasta-da-ia/review.ts
+        run: npx tsx ia-review/.github/scripts/review.ts
